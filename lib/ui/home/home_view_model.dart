@@ -1,14 +1,10 @@
+import 'package:flutter_map_app/data/model/location_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeState {
-  final String? title;
-  final String? category;
-  final String? roadAddress;
-
+  List<LocationModel>? locations;
   HomeState({
-    required this.title,
-    required this.category,
-    required this.roadAddress,
+    required this.locations,
   });
 }
 
@@ -16,9 +12,7 @@ class HomeViewModel extends Notifier<HomeState> {
   @override
   HomeState build() {
     return state = HomeState(
-      title: null,
-      category: null,
-      roadAddress: null,
+      locations: null,
     );
   }
 }

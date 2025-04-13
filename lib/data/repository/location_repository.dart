@@ -14,6 +14,7 @@ class LocationRepository {
           Uri.parse(
               'https://openapi.naver.com/v1/search/blog.json?query=$query'),
           headers: {
+            // Id, Secret .env파일에서 불러오기
             'X-Naver-Client-Id': dotenv.env['NAVER_CLIENT_ID'] ?? '',
             'X-Naver-Client-Secret': dotenv.env['NAVER_CLIENT_SECRET'] ?? '',
           });
