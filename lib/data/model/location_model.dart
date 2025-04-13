@@ -1,15 +1,15 @@
-class PlaceModel {
+class LocationModel {
   final String? title;
   final String? category;
   final String? roadAddress;
 
-  PlaceModel({
+  LocationModel({
     required this.title,
     required this.category,
     required this.roadAddress,
   });
 
-  PlaceModel.fromJson(Map<String, dynamic> map)
+  LocationModel.fromJson(Map<String, dynamic> map)
       : this(
           title: map['title'],
           category: map['category'],
