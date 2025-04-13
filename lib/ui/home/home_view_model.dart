@@ -1,4 +1,5 @@
 import 'package:flutter_map_app/data/model/location_model.dart';
+import 'package:flutter_map_app/data/repository/location_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeState {
@@ -14,6 +15,11 @@ class HomeViewModel extends Notifier<HomeState> {
     return state = HomeState(
       locations: null,
     );
+  }
+
+  Future<void> search(String query) async {
+    LocationRepository locationRepository = LocationRepository();
+    state = HomeState(locations: await locationRepository.search(query));
   }
 }
 
