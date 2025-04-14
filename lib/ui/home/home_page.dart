@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map_app/ui/detail/detail_page.dart';
+import 'package:flutter_map_app/ui/home/home_view_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    TextEditingController textEditingController = TextEditingController();
+    HomeState homestate = ref.watch(homeViewModelProvider);
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -15,6 +20,11 @@ class HomePage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.grey[100],
           title: TextField(
+            controller: textEditingController,
+            onSubmitted: (text){
+              print(text);
+              ref.read(homeViewModelProvider.notifier).search(text);
+            },
             decoration: InputDecoration(
               hintText: '주소를 입력해 주세요',
               border: WidgetStateInputBorder.resolveWith(
@@ -41,8 +51,12 @@ class HomePage extends StatelessWidget {
           ),
         ),
         body: ListView.builder(
-          itemCount: 5,
+          itemCount: homestate.locations?.length ?? 0,
           itemBuilder: (context, index) {
+            final location = homestate.locations?[index];
+            if(location == null){
+              return Container();
+            }
             return Padding(
               padding: EdgeInsets.all(16),
               child: GestureDetector(
@@ -70,7 +84,7 @@ class HomePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '삼성1동 주민센터',
+                          location.title ?? '',
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 18,
@@ -79,14 +93,14 @@ class HomePage extends StatelessWidget {
                         ),
                         Spacer(),
                         Text(
-                          '공공>사회기관>행정복지센터',
+                          location.category ?? '',
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 14,
                           ),
                         ),
                         Text(
-                          '서울 강남구 봉은사로 616 삼성1동 주민센터',
+                          location.roadAddress ?? '',
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 14,
