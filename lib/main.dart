@@ -4,6 +4,7 @@ import 'package:flutter_map_app/ui/home/home_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: 'lib/assets/apiKey.env');
 
   runApp(ProviderScope(child: const MyApp()));
