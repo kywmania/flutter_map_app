@@ -47,6 +47,23 @@ class HomePage extends ConsumerWidget {
               ),
             ),
           ),
+          actions: [
+            GestureDetector(
+              onTap: () {
+                print('버튼 클릭');
+              },
+              child: Container(
+                padding: EdgeInsets.only(right: 15),
+                alignment: Alignment.center,
+                width: 50,
+                height: 50,
+                color: Colors.transparent,
+                child: Icon(Icons.gps_fixed,
+                  size: 30,
+                ),
+              ),
+            ),
+          ],
         ),
         body: ListView.builder(
           itemCount: homestate.locations?.length ?? 0,
