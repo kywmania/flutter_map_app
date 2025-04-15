@@ -1,28 +1,28 @@
-import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map_app/data/model/location_model.dart';
-import 'package:http/http.dart';
 
 class LocationRepository {
   Future<List<LocationModel>?> search(String query) async {
+    final Dio _dio = Dio();
     final encodedQuery = Uri.encodeComponent(query);
-    print('실제 검색어 : $encodedQuery');
     try {
-      Client client = Client();
-      Response response = await client.get(
-        Uri.parse(
-            'https://openapi.naver.com/v1/search/local.json?query=$encodedQuery&display=5'),
-        headers: {
-          // // // Id, Secret .env파일에서 불러오기
-          'X-Naver-Client-Id': dotenv.env['NAVER_CLIENT_ID'] ?? '',
-          'X-Naver-Client-Secret': dotenv.env['NAVER_CLIENT_SECRET'] ?? '',
-          
+      final response = await _dio.get(
+        'https://openapi.naver.com/v1/search/local.json',
+        queryParameters: {
+          'query': encodedQuery,
+          'display': 5,
         },
+        options: Options(
+          headers: {
+            'X-Naver-Client-Id': dotenv.env['NAVER_CLIENT_ID'] ?? '',
+            'X-Naver-Client-Secret': dotenv.env['NAVER_CLIENT_SECRET'] ?? '',
+          },
+        ),
       );
 
-      print('코드 : ${response.statusCode}');
       if (response.statusCode == 200) {
-        final map = jsonDecode(response.body);
+        final map = response.data;
         return List.from(map["items"])
             .map((e) => LocationModel.fromJson(e))
             .toList();
@@ -30,7 +30,7 @@ class LocationRepository {
         return null;
       }
     } catch (e) {
-      print(e);
+      print('검색 오류: $e');
       return null;
     }
   }
