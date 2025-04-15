@@ -3,14 +3,15 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map_app/data/model/location_model.dart';
 
 class LocationRepository {
+
   Future<List<LocationModel>?> search(String query) async {
-    final Dio _dio = Dio();
-    final encodedQuery = Uri.encodeComponent(query);
+    final Dio dio = Dio();
+    print('검색 : $query');
     try {
-      final response = await _dio.get(
+      final response = await dio.get(
         'https://openapi.naver.com/v1/search/local.json',
         queryParameters: {
-          'query': encodedQuery,
+          'query': query,
           'display': 5,
         },
         options: Options(

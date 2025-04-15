@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_map_app/ui/detail/detail_page.dart';
 import 'package:flutter_map_app/ui/home/home_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,7 +9,6 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    TextEditingController textEditingController = TextEditingController();
     HomeState homestate = ref.watch(homeViewModelProvider);
 
     return GestureDetector(
@@ -20,7 +20,6 @@ class HomePage extends ConsumerWidget {
         appBar: AppBar(
           backgroundColor: Colors.grey[100],
           title: TextField(
-            controller: textEditingController,
             onSubmitted: (text) {
               ref.read(homeViewModelProvider.notifier).search(text);
             },
@@ -60,7 +59,9 @@ class HomePage extends ConsumerWidget {
               padding: EdgeInsets.all(16),
               child: GestureDetector(
                 onTap: () {
-                  if (location.link != null && location.link!.trim().isNotEmpty && location.link!.contains('http')) {
+                  if (location.link != null &&
+                      location.link!.trim().isNotEmpty &&
+                      location.link!.contains('http')) {
                     print('링크: ${location.link}');
                     Navigator.push(
                       context,
@@ -87,13 +88,18 @@ class HomePage extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          location.title ?? '',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Html(
+                          data: location.title ?? '',
+                          style: {
+                            "*": Style(
+                              padding: HtmlPaddings.zero,
+                              margin: Margins.zero,
+                              fontSize: FontSize(18),
+                              fontWeight: FontWeight.bold,
+                              maxLines: 1,
+                              textOverflow: TextOverflow.ellipsis,
+                            )
+                          },
                         ),
                         Spacer(),
                         Text(
