@@ -16,8 +16,7 @@ class LocationRepository {
           // // // Id, Secret .env파일에서 불러오기
           'X-Naver-Client-Id': dotenv.env['NAVER_CLIENT_ID'] ?? '',
           'X-Naver-Client-Secret': dotenv.env['NAVER_CLIENT_SECRET'] ?? '',
-          // 'X-Naver-Client-Id': 'UbNctVZ0fpPIlDBJAsbQ',
-          // 'X-Naver-Client-Secret': '1yuYn5bOje',
+          
         },
       );
 

@@ -21,8 +21,7 @@ class HomePage extends ConsumerWidget {
           backgroundColor: Colors.grey[100],
           title: TextField(
             controller: textEditingController,
-            onSubmitted: (text){
-              print(text);
+            onSubmitted: (text) {
               ref.read(homeViewModelProvider.notifier).search(text);
             },
             decoration: InputDecoration(
@@ -54,21 +53,26 @@ class HomePage extends ConsumerWidget {
           itemCount: homestate.locations?.length ?? 0,
           itemBuilder: (context, index) {
             final location = homestate.locations?[index];
-            if(location == null){
+            if (location == null) {
               return Container();
             }
             return Padding(
               padding: EdgeInsets.all(16),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return DetailPage();
-                      },
-                    ),
-                  );
+                  if (location.link != null && location.link!.trim().isNotEmpty) {
+                    print('링크: ${location.link}');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return DetailPage(
+                            link: location.link,
+                          );
+                        },
+                      ),
+                    );
+                  }
                 },
                 child: Container(
                   width: double.infinity,

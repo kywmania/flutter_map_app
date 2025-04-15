@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class DetailPage extends StatelessWidget {
-  const DetailPage({super.key});
+  const DetailPage({required this.link, super.key});
+
+  final String? link;
 
   @override
   Widget build(BuildContext context) {
+    print(link);
     return Scaffold(
       appBar: AppBar(
         title: Text('DetailPage'),
+      ),
+      body: InAppWebView(
+        initialUrlRequest: URLRequest(
+          url: WebUri(link!),
+        ),
       ),
     );
   }
