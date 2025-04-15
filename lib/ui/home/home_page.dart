@@ -60,7 +60,7 @@ class HomePage extends ConsumerWidget {
               padding: EdgeInsets.all(16),
               child: GestureDetector(
                 onTap: () {
-                  if (location.link != null && location.link!.trim().isNotEmpty) {
+                  if (location.link != null && location.link!.trim().isNotEmpty && location.link!.contains('http')) {
                     print('링크: ${location.link}');
                     Navigator.push(
                       context,

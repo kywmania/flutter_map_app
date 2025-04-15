@@ -8,11 +8,7 @@ class DetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(link);
     return Scaffold(
-      appBar: AppBar(
-        title: Text('DetailPage'),
-      ),
       body: InAppWebView(
         initialUrlRequest: URLRequest(
           url: WebUri(link!),
