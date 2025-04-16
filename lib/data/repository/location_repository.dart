@@ -31,7 +31,7 @@ class LocationRepository {
         return null;
       }
     } catch (e) {
-      print('검색 오류: $e');
+      print('naver검색 오류: $e');
       return null;
     }
   }

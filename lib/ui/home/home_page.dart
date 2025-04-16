@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_map_app/data/repository/geolocator.dart';
 import 'package:flutter_map_app/ui/detail/detail_page.dart';
 import 'package:flutter_map_app/ui/home/home_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    HomeState homestate = ref.watch(homeViewModelProvider);
+    HomeState homeState = ref.watch(homeViewModelProvider);
 
     return GestureDetector(
       onTap: () {
@@ -49,8 +51,12 @@ class HomePage extends ConsumerWidget {
           ),
           actions: [
             GestureDetector(
-              onTap: () {
-                print('버튼 클릭');
+              onTap: () async {
+                Position pos = await getCurrentLocation();
+                print('${pos.longitude}, ${pos.latitude}');
+                ref
+                    .read(homeViewModelProvider.notifier)
+                    .searchByLatLng(pos.longitude, pos.latitude);
               },
               child: Container(
                 padding: EdgeInsets.only(right: 15),
@@ -58,7 +64,8 @@ class HomePage extends ConsumerWidget {
                 width: 50,
                 height: 50,
                 color: Colors.transparent,
-                child: Icon(Icons.gps_fixed,
+                child: Icon(
+                  Icons.gps_fixed,
                   size: 30,
                 ),
               ),
@@ -66,14 +73,14 @@ class HomePage extends ConsumerWidget {
           ],
         ),
         body: ListView.builder(
-          itemCount: homestate.locations?.length ?? 0,
+          itemCount: homeState.locations?.length ?? 0,
           itemBuilder: (context, index) {
-            final location = homestate.locations?[index];
+            final location = homeState.locations?[index];
             if (location == null) {
               return Container();
             }
             return Padding(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
               child: GestureDetector(
                 onTap: () {
                   if (location.link != null &&
